@@ -2,6 +2,8 @@
 # UserName=my_username&Password=my_password
 
 COMPETITION=transfer-learning-on-stack-exchange-tags
+KAGGLE_URL=http://www.kaggle.com/c/${COMPETITION}
+DATA_FILES=$(shell cat files.txt | rev | cut -f 1 -d "/" | rev | sed "s/^/files\//")
 
 all: download_files
 
@@ -16,6 +18,13 @@ files.txt: session.cookie
 download_files: files.txt session.cookie
 	mkdir -p files
 	cd files && xargs -n 1 curl --limit-rate 1M -b ../session.cookie -L -O < ../files.txt
+
+files/%.zip:
+
+extract: ${DATA_FILES}
+	mkdir -p data/raw
+	for f in ${DATA_FILES}; do unzip $${f} -d data/raw; done
+	# for f in ${DATA_FILES}; do echo $$(basename $${f}); done
 
 .PHONY: clean
 
