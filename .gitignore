@@ -1,5 +1,9 @@
 # Kaggle
 credentials.txt
+files.txt
+data/*
+files/*
+session.cookie
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
